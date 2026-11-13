@@ -1,0 +1,34 @@
+
+version: 2
+
+models:
+  - name: raw_news
+    columns:
+      - name: ID
+        tests:
+          - not_null
+          - unique
+
+  - name: raw_stocks
+    columns:
+      - name: SYMBOL
+        tests:
+          - not_null
+      - name: TRADE_DATE
+        tests:
+          - not_null
+      - name: "SYMBOL || '|' || TRADE_DATE::VARCHAR"
+        tests:
+          - unique
+
+  - name: raw_weather
+    columns:
+      - name: CITY
+        tests:
+          - not_null
+      - name: DATE
+        tests:
+          - not_null
+      - name: "CITY || '|' || DATE::VARCHAR"
+        tests:
+          - unique
