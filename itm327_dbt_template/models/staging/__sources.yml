@@ -1,8 +1,8 @@
 version: 2
 
 sources:
-  - name: snowbearair
-    database: SNOWBEARAIR_DB
+  - name: project_raw
+    database: PROJECT_DB
     schema: RAW
     description: >
       Raw tables loaded by Airflow DAGs into Snowflake.
@@ -15,7 +15,7 @@ sources:
       # NEWS — loaded by: news_to_sftp_dag → sftp_to_snowflake_dagv2
       # Source: Finnhub API (financial news by stock symbol)
       # ----------------------------------------------------------------
-      - name: LASTN_FI_NEWS
+      - name: NEWS_OWENS_C
         description: Daily financial news articles fetched from Finnhub, one row per article.
         columns:
           - name: ID
@@ -50,15 +50,15 @@ sources:
       # STOCKS — loaded by: stocks_to_mongo_dagv3 → mongo_to_snowflake_dag
       # Source: Yahoo Finance (yfinance) via MongoDB staging
       # ----------------------------------------------------------------
-      - name: LASTN_FI_STOCKS
+      - name: STOCKS_OWENS_C
         description: Daily OHLCV stock data for S&P 500 symbols, one row per symbol per trading day.
         columns:
           - name: SYMBOL
             description: Stock ticker symbol (e.g., AAPL, MSFT).
             tests:
               - not_null
-          - name: TRADE_DATE
-            description: The trading date for this record.
+          - name: DATETIME
+            description: The timestamp for this stock record.
             tests:
               - not_null
           - name: OPEN
@@ -91,7 +91,7 @@ sources:
       # WEATHER — loaded by: weather_to_snowflake_dag_v2
       # Source: Open-Meteo Historical API (financial hub cities)
       # ----------------------------------------------------------------
-      - name: LASTN_FI_WEATHER
+      - name: WEATHER_OWENS_C
         description: Daily weather observations for financial hub cities, one row per city per day.
         columns:
           - name: DATE

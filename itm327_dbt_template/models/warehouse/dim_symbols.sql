@@ -46,3 +46,22 @@
 -- ============================================================
 
 -- TODO: Write your SELECT statement below
+SELECT
+    SYMBOL,
+
+    -- Date range
+    MIN(TRADE_DATE) AS FIRST_SEEN_DATE,
+    MAX(TRADE_DATE) AS LAST_SEEN_DATE,
+    COUNT(DISTINCT TRADE_DATE) AS TOTAL_TRADING_DAYS,
+
+    -- Price statistics
+    MAX(HIGH) AS ALL_TIME_HIGH,
+    MIN(LOW) AS ALL_TIME_LOW,
+    AVG(CLOSE) AS AVG_CLOSE_PRICE,
+
+    -- Volume
+    AVG(VOLUME) AS AVG_DAILY_VOLUME
+
+FROM {{ ref('raw_stocks') }}
+
+GROUP BY SYMBOL

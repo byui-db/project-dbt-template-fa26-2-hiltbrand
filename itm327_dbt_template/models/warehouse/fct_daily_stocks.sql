@@ -36,3 +36,33 @@
 -- ============================================================
 
 -- TODO: Write your SELECT statement below
+
+SELECT
+    -- Keys
+    SYMBOL,
+    TRADE_DATE,
+
+    -- Price metrics
+    OPEN,
+    HIGH,
+    LOW,
+    CLOSE,
+    VOLUME,
+
+    -- Derived price metrics
+    HIGH - LOW AS DAILY_RANGE,
+
+    CLOSE - OPEN AS DAILY_CHANGE,
+
+    ROUND(
+        ((CLOSE - OPEN) / NULLIF(OPEN, 0)) * 100,
+        4
+    ) AS PCT_CHANGE,
+
+    CASE
+        WHEN CLOSE > OPEN THEN 'UP'
+        WHEN CLOSE < OPEN THEN 'DOWN'
+        ELSE 'FLAT'
+    END AS DIRECTION
+
+FROM {{ ref('raw_stocks') }}

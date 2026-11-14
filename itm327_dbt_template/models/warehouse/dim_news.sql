@@ -48,3 +48,22 @@
 -- ============================================================
 
 -- TODO: Write your SELECT statement below
+
+SELECT
+    ID,
+
+    -- Foreign keys
+    TRIM(UPPER(RELATED)) AS SYMBOL,
+    PUBLISHED_DATE::DATE AS DATE_KEY,
+
+    -- Publication timestamp
+    PUBLISHED_DATE AS PUBLISHED_AT,
+
+    -- Descriptive attributes
+    HEADLINE,
+    CATEGORY,
+    SOURCE,
+    SUMMARY,
+    URL
+
+FROM {{ ref('raw_news') }}

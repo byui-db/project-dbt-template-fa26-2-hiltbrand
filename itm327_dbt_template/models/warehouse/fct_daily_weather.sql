@@ -28,3 +28,16 @@
 -- ============================================================
 
 -- TODO: Write your SELECT statement below
+
+SELECT
+    -- Keys
+    DATE,
+    CITY,
+
+    -- Weather measurements
+    MAX_TEMP,
+    MIN_TEMP,
+    PRECIP,
+    MAX_WIND
+
+FROM {{ ref('raw_weather') }}
