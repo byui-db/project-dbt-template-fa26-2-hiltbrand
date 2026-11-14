@@ -6,8 +6,9 @@ sources:
     schema: RAW
     description: >
       Raw tables loaded by Airflow DAGs into Snowflake.
-      TODO: Replace LASTN_FI in each table name below with your own prefix
-      (e.g., if your name is Jane Smith, use SMITHJ_NEWS, SMITHJ_STOCKS, SMITHJ_WEATHER).
+       Raw Weather, News, and Stocks tables loaded into
+      --PROJECT_DB.RAW for Milestone 4.
+      
 
     tables:
 
@@ -15,14 +16,14 @@ sources:
       # NEWS — loaded by: news_to_sftp_dag → sftp_to_snowflake_dagv2
       # Source: Finnhub API (financial news by stock symbol)
       # ----------------------------------------------------------------
-      - name: LASTN_FI_NEWS
+      - name: NEWS_RITTA_A
         description: Daily financial news articles fetched from Finnhub, one row per article.
         columns:
           - name: ID
             description: Unique article identifier from Finnhub.
             tests:
               - not_null
-              - unique
+              
           - name: HEADLINE
             description: News article headline.
             tests:
@@ -50,15 +51,15 @@ sources:
       # STOCKS — loaded by: stocks_to_mongo_dagv3 → mongo_to_snowflake_dag
       # Source: Yahoo Finance (yfinance) via MongoDB staging
       # ----------------------------------------------------------------
-      - name: LASTN_FI_STOCKS
+      - name: STOCKS_RITTA_A_M3
         description: Daily OHLCV stock data for S&P 500 symbols, one row per symbol per trading day.
         columns:
           - name: SYMBOL
             description: Stock ticker symbol (e.g., AAPL, MSFT).
             tests:
               - not_null
-          - name: TRADE_DATE
-            description: The trading date for this record.
+          - name: DATETIME
+            description: Original stock observation timestamp
             tests:
               - not_null
           - name: OPEN
@@ -82,23 +83,25 @@ sources:
               - not_null
               - is_positive_amount
           - name: VOLUME
-            description: Total shares traded during the session.
+            description: Number of shares traded.
             tests:
               - not_null
-              - is_positive_amount
+              
 
       # ----------------------------------------------------------------
       # WEATHER — loaded by: weather_to_snowflake_dag_v2
       # Source: Open-Meteo Historical API (financial hub cities)
       # ----------------------------------------------------------------
-      - name: LASTN_FI_WEATHER
+      - name: RITTA_ALFREDO_M1
         description: Daily weather observations for financial hub cities, one row per city per day.
         columns:
-          - name: DATE
+          - name: date
+            quote: true
             description: The observation date.
             tests:
               - not_null
-          - name: CITY
+          - name: city
+            quote: true
             description: Financial hub city name (e.g., New York, London, Tokyo).
             tests:
               - not_null

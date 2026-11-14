@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  # News: one row per article ID
+  - name: raw_news
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+          - unique
+
+ # Stocks: one row per symbol per trading date
+  - name: raw_stocks
+    columns:
+      - name: symbol
+        data_tests:
+          - not_null
+      - name: trade_date
+        data_tests:
+          - not_null
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - symbol
+            - trade_date
+
+  # Weather: one row per city per date
+  - name: raw_weather
+    columns:
+      - name: city
+        data_tests:
+          - not_null
+      - name: date
+        data_tests:
+          - not_null
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - city
+            - date
+            
