@@ -1,0 +1,109 @@
+version: 2
+
+models:
+  - name: raw_news
+    description: "Cleaned news data."
+    columns:
+      - name: id
+        description: "Unique identifier for the news article."
+        tests:
+          - unique
+          - not_null
+
+      - name: category
+        description: "Category assigned to the news article."
+
+      - name: headline
+        description: "Headline of the news article."
+
+      - name: datetime
+        description: "Date and time the article was published."
+
+      - name: img
+        description: "Image associated with the article."
+
+      - name: source
+        description: "Source that published the article."
+
+      - name: summary
+        description: "Summary of the news article."
+
+      - name: symbol
+        description: "Stock symbol associated with the article."
+
+      - name: url
+        description: "URL of the original article."
+
+  - name: raw_stocks
+    description: "Cleaned stock market data."
+    
+
+    columns:
+      - name: trade_date
+        description: "Date the stock was traded."
+        tests:
+          - not_null
+
+      - name: open
+        description: "Opening price of the stock."
+
+      - name: high
+        description: "Highest price of the stock during the trading day."
+
+      - name: low
+        description: "Lowest price of the stock during the trading day."
+
+      - name: close
+        description: "Closing price of the stock."
+
+      - name: volume
+        description: "Number of shares traded."
+        tests:
+         - is_positive_amount
+
+      - name: symbol
+        description: "Stock ticker symbol."
+        tests:
+          - not_null
+
+  - name: raw_weather
+    description: "Cleaned weather data."
+    
+
+    columns:
+      - name: city
+        description: "City where the weather was recorded."
+        tests:
+          - not_null
+
+      - name: date
+        description: "Date the weather was recorded."
+        tests:
+          - not_null
+
+      - name: precip
+        description: "Total precipitation for the day."
+
+      - name: max_temp
+        description: "Maximum temperature for the day."
+
+      - name: min_temp
+        description: "Minimum temperature for the day."
+
+      - name: wind_speed
+        description: "Average wind speed for the day."
+
+      - name: lift
+        description: "Lift or elevation-related weather measurement."
+          
+      - name: wind_gust
+        description: "Maximum wind gust for the day."
+
+      - name: dom_wind_dir
+        description: "Dominant wind direction for the day."
+
+      - name: sunrise
+        description: "Time of sunrise."
+
+      - name: sunset
+        description: "Time of sunset."
