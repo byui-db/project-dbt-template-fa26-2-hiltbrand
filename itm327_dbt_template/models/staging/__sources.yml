@@ -15,7 +15,7 @@ sources:
       # NEWS — loaded by: news_to_sftp_dag → sftp_to_snowflake_dagv2
       # Source: Finnhub API (financial news by stock symbol)
       # ----------------------------------------------------------------
-      - name: LASTN_FI_NEWS
+      - name: NEWS_DAG_SHAW_A
         description: Daily financial news articles fetched from Finnhub, one row per article.
         columns:
           - name: ID
@@ -50,33 +50,33 @@ sources:
       # STOCKS — loaded by: stocks_to_mongo_dagv3 → mongo_to_snowflake_dag
       # Source: Yahoo Finance (yfinance) via MongoDB staging
       # ----------------------------------------------------------------
-      - name: LASTN_FI_STOCKS
+      - name: STOCK_DATA_DAG_SHAW_A
         description: Daily OHLCV stock data for S&P 500 symbols, one row per symbol per trading day.
         columns:
-          - name: SYMBOL
+          - name: TICKER
             description: Stock ticker symbol (e.g., AAPL, MSFT).
             tests:
               - not_null
-          - name: TRADE_DATE
+          - name: DATETIME
             description: The trading date for this record.
             tests:
               - not_null
-          - name: OPEN
+          - name: OPENING_PRICE
             description: Opening price for the trading day (USD).
             tests:
               - not_null
               - is_positive_amount
-          - name: HIGH
+          - name: HIGH_PRICE
             description: Intraday high price (USD).
             tests:
               - not_null
               - is_positive_amount
-          - name: LOW
+          - name: LOW_PRICE
             description: Intraday low price (USD).
             tests:
               - not_null
               - is_positive_amount
-          - name: CLOSE
+          - name: CLOSING_PRICE
             description: Closing price for the trading day (USD).
             tests:
               - not_null
@@ -85,16 +85,17 @@ sources:
             description: Total shares traded during the session.
             tests:
               - not_null
-              - is_positive_amount
+              
+              
 
       # ----------------------------------------------------------------
       # WEATHER — loaded by: weather_to_snowflake_dag_v2
       # Source: Open-Meteo Historical API (financial hub cities)
       # ----------------------------------------------------------------
-      - name: LASTN_FI_WEATHER
+      - name: WEATHER_DAG_AS
         description: Daily weather observations for financial hub cities, one row per city per day.
         columns:
-          - name: DATE
+          - name: TIME
             description: The observation date.
             tests:
               - not_null

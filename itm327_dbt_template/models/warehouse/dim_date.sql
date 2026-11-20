@@ -20,8 +20,8 @@
 
 WITH date_spine AS (
     SELECT
-        DATEADD(DAY, SEQ4(), '2023-01-01'::DATE) AS DATE_KEY  -- TODO: update start date
-    FROM TABLE(GENERATOR(ROWCOUNT => 365 * 5))                 -- TODO: update years to cover your data
+        DATEADD(DAY, SEQ4(), '2026-01-01'::DATE) AS DATE_KEY  -- TODO: update start date
+    FROM TABLE(GENERATOR(ROWCOUNT => 365))                 -- TODO: update years to cover your data
 )
 
 SELECT

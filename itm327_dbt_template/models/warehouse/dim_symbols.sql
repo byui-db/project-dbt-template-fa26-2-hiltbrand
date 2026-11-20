@@ -46,4 +46,15 @@
 -- ============================================================
 
 -- TODO: Write your SELECT statement below
-select 1 as placeholder  -- placeholder so the template compiles; DELETE this line when you write your own SELECT
+--select 1 as placeholder  -- placeholder so the template compiles; DELETE this line when you write your own SELECT
+select
+    symbol
+    , min(trade_date) as first_seen_date
+    , max(trade_date) as last_seen_date
+    , count(symbol) as total_trading_days
+    , max(high) as all_time_high
+    , min(low) as all_time_low
+    , avg(close) as avg_close_price
+    , avg(volume) as average_daily_volume
+from {{ ref('raw_stocks') }}
+group by symbol

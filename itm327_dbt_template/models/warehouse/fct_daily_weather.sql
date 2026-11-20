@@ -28,4 +28,12 @@
 -- ============================================================
 
 -- TODO: Write your SELECT statement below
-select 1 as placeholder  -- placeholder so the template compiles; DELETE this line when you write your own SELECT
+-- select 1 as placeholder  -- placeholder so the template compiles; DELETE this line when you write your own SELECT
+SELECT 
+    date, 
+    city,
+    max_temp,
+    min_temp,
+    precip,
+    wind_speed 
+FROM {{ ref('raw_weather') }}
