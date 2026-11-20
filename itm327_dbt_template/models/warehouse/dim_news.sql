@@ -48,4 +48,14 @@
 -- ============================================================
 
 -- TODO: Write your SELECT statement below
-select 1 as placeholder  -- placeholder so the template compiles; DELETE this line when you write your own SELECT
+-- select 1 as placeholder  -- placeholder so the template compiles; DELETE this line when you write your own SELECT
+SELECT
+    id
+    , symbol
+    , published_at::DATE AS date_key
+    , published_at::TIMESTAMP AS published_at
+    , headline
+    , category
+    , summary
+    , url
+FROM {{ ref('raw_news') }}

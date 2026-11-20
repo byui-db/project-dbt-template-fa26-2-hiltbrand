@@ -3,7 +3,7 @@ select
     id::VARCHAR AS id,
     category::VARCHAR as category,
     headline::VARCHAR AS headline,
-    datetime::TIMESTAMP AS datetime,
+    datetime::TIMESTAMP AS published_at,
     image::VARCHAR AS img,
     source::VARCHAR as source,
     summary::VARCHAR as summary,

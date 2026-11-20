@@ -1,0 +1,73 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: "Date dimension table."
+    columns:
+     - name: date_key
+       tests:
+        - unique
+        - not_null
+  - name: dim_news
+    description: "News dimension table."
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+          
+      - name: symbol
+        tests:
+          - not_null
+          
+      - name: date_key
+        tests:
+          - not_null
+
+  - name: dim_symbols
+    description: "Stock dimension table."
+    columns:
+      - name: symbol
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_weather_cities
+    description: "Weather dimension table."
+    columns:
+      - name: city
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_daily_stocks     
+    description: "Daily stocks table."
+    columns:
+      - name: symbol
+        tests:
+          - not_null
+          - relationships:
+              to: ref('raw_stocks')
+              field: symbol
+      - name: trade_date
+        tests:
+          - not_null
+      - name: direction
+        tests:
+          - accepted_values:
+              values: ['UP', 'DOWN', 'FLAT']
+              
+  - name: fct_daily_weather
+    description: "Daily weather table."
+    columns:
+      - name: city
+        tests:
+         - not_null
+         - accepted_values:
+            values: ["New York", "London", "Tokyo"]
+      - name: date
+        tests:
+          - not_null
+       
+
+

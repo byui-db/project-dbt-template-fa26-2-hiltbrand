@@ -16,7 +16,7 @@ models:
       - name: headline
         description: "Headline of the news article."
 
-      - name: datetime
+      - name: published_at
         description: "Date and time the article was published."
 
       - name: img
