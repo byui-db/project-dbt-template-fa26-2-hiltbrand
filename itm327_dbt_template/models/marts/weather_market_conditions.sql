@@ -46,3 +46,61 @@
 -- ============================================================
 
 -- TODO: Write your SELECT statement below
+WITH daily_market AS (
+    SELECT
+        TRADE_DATE,
+
+        COUNT(DISTINCT SYMBOL) AS STOCKS_TRACKED,
+
+        AVG(PCT_CHANGE) AS AVG_PCT_CHANGE,
+
+        AVG(DAILY_RANGE) AS AVG_DAILY_RANGE,
+
+        SUM(VOLUME) AS TOTAL_MARKET_VOLUME,
+
+        COUNT_IF(DIRECTION = 'UP') AS STOCKS_UP,
+
+        COUNT_IF(DIRECTION = 'DOWN') AS STOCKS_DOWN,
+
+        COUNT_IF(DIRECTION = 'FLAT') AS STOCKS_FLAT
+
+    FROM {{ ref('fct_daily_stocks') }}
+
+    GROUP BY TRADE_DATE
+)
+
+SELECT
+    w.DATE,
+    w.CITY,
+
+    -- Weather measurements
+    w.MAX_TEMP,
+    w.MIN_TEMP,
+    w.PRECIP,
+    w.MAX_WIND,
+
+    -- Historical weather comparison
+    c.AVG_MAX_TEMP AS CITY_NORMAL_MAX_TEMP,
+
+    w.MAX_TEMP - c.AVG_MAX_TEMP
+        AS TEMP_DEVIATION_FROM_NORMAL,
+
+    -- Market performance
+    m.STOCKS_TRACKED,
+    m.AVG_PCT_CHANGE,
+    m.AVG_DAILY_RANGE,
+    m.TOTAL_MARKET_VOLUME,
+    m.STOCKS_UP,
+    m.STOCKS_DOWN,
+    m.STOCKS_FLAT
+
+FROM {{ ref('fct_daily_weather') }} w
+
+LEFT JOIN {{ ref('dim_weather_cities') }} c
+    ON w.CITY = c.CITY
+
+LEFT JOIN daily_market m
+    ON w.DATE = m.TRADE_DATE
+
+LEFT JOIN {{ ref('dim_date') }} d
+    ON w.DATE = d.DATE_KEY

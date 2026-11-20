@@ -1,3 +1,4 @@
+{{ config(enabled=false) }}
 -- ============================================================
 -- stock_news_daily
 -- DA Mart: daily stock performance enriched with news coverage

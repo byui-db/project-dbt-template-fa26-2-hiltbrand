@@ -1,0 +1,18 @@
+SELECT
+    DATE,
+    CITY,
+    STOCKS_TRACKED,
+    STOCKS_UP,
+    STOCKS_DOWN,
+    STOCKS_FLAT
+
+FROM {{ ref('weather_market_conditions') }}
+
+WHERE STOCKS_TRACKED IS NOT NULL
+  AND (
+      STOCKS_UP IS NULL
+      OR STOCKS_DOWN IS NULL
+      OR STOCKS_FLAT IS NULL
+      OR STOCKS_UP + STOCKS_DOWN + STOCKS_FLAT
+          <> STOCKS_TRACKED
+  )

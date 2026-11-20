@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: weather_market_conditions
+    description: Daily weather conditions and market performance by city and date.
+
+    columns:
+      - name: DATE
+        description: Date of weather observation.
+        data_tests:
+          - not_null
+
+      - name: CITY
+        description: Financial hub city.
+        data_tests:
+          - not_null
+
+      - name: TEMP_DEVIATION_FROM_NORMAL
+        description: Difference between daily maximum temperature and historical average.
+        data_tests:
+          - not_null
+      # Composite-key uniqueness (CITY + DATE) is validated by
+      # tests/weather_market_unique_city_date.sql.

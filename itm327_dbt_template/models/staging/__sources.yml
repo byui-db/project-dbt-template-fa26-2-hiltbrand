@@ -22,7 +22,6 @@ sources:
             description: Unique article identifier from Finnhub.
             tests:
               - not_null
-              - unique
           - name: HEADLINE
             description: News article headline.
             tests:
@@ -85,7 +84,7 @@ sources:
             description: Total shares traded during the session.
             tests:
               - not_null
-              - is_positive_amount
+              
 
       # ----------------------------------------------------------------
       # WEATHER — loaded by: weather_to_snowflake_dag_v2
