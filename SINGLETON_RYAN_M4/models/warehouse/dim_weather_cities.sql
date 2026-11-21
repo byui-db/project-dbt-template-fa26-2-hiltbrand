@@ -44,4 +44,17 @@
 -- ============================================================
 
 -- TODO: Write your SELECT statement below
-select 1 as placeholder  -- placeholder so the template compiles; DELETE this line when you write your own SELECT
+select
+    city,
+    min(date) as first_observation_date,
+    max(date) as last_observation_date,
+    count(distinct date) as total_observation_days,
+    round(avg(max_temp), 2) as avg_max_temp,
+    round(avg(min_temp), 2) as avg_min_temp,
+    round(avg(precip), 2) as avg_daily_precip,
+    round(avg(max_wind), 2) as avg_max_wind,
+    max(max_temp) as hottest_day_temp,
+    min(min_temp) as coldest_day_temp,
+    max(precip) as wettest_day_precip
+from {{ ref('raw_weather') }}
+group by city

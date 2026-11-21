@@ -36,4 +36,21 @@
 -- ============================================================
 
 -- TODO: Write your SELECT statement below
-select 1 as placeholder  -- placeholder so the template compiles; DELETE this line when you write your own SELECT
+select
+    symbol,
+    trade_date,
+    open,
+    high,
+    low,
+    close,
+    volume,
+    high - low as daily_range,
+    close - open as daily_change,
+    case when open = 0 then null
+         else round((close - open) / open * 100, 4)
+    end as pct_change,
+    case when close > open then 'UP'
+         when close < open then 'DOWN'
+         else 'FLAT'
+    end as direction
+from {{ ref('raw_stocks') }}

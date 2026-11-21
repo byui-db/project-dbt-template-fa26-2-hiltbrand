@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: dim_date
+    columns:
+      - name: DATE_KEY
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_symbols
+    columns:
+      - name: SYMBOL
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_weather_cities
+    columns:
+      - name: CITY
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_news
+    columns:
+      - name: ID
+        tests:
+          - not_null
+          - unique
+      - name: SYMBOL
+        tests:
+          - not_null
+      - name: DATE_KEY
+        tests:
+          - not_null
+
+  - name: fct_daily_stocks
+    columns:
+      - name: SYMBOL
+        tests:
+          - not_null
+      - name: TRADE_DATE
+        tests:
+          - not_null
+      # same combined key trick as staging, no dbt_utils
+      - name: "SYMBOL || '|' || TRADE_DATE::VARCHAR"
+        tests:
+          - unique
+      - name: DIRECTION
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['UP', 'DOWN', 'FLAT']
+
+  - name: fct_daily_weather
+    columns:
+      - name: CITY
+        tests:
+          - not_null
+      - name: DATE
+        tests:
+          - not_null
+      - name: "CITY || '|' || DATE::VARCHAR"
+        tests:
+          - unique
