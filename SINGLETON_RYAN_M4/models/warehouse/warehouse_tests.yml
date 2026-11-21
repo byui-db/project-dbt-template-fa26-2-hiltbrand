@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: dim_date
+    columns:
+      - name: DATE_KEY
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_symbols
+    columns:
+      - name: SYMBOL
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_weather_cities
+    columns:
+      - name: CITY
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_news
+    columns:
+      - name: ID
+        tests:
+          - not_null
+          - unique
+      - name: SYMBOL
+        tests:
+          - not_null
+      - name: DATE_KEY
+        tests:
+          - not_null
+
+  - name: fct_daily_stocks
+    # composite key, built in unique on the joined columns (no dbt_utils)
+    data_tests:
+      - unique:
+          column_name: "SYMBOL || '|' || TRADE_DATE"
+    columns:
+      - name: SYMBOL
+        tests:
+          - not_null
+      - name: TRADE_DATE
+        tests:
+          - not_null
+      - name: DIRECTION
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['UP', 'DOWN', 'FLAT']
+
+  - name: fct_daily_weather
+    data_tests:
+      - unique:
+          column_name: "CITY || '|' || DATE"
+    columns:
+      - name: CITY
+        tests:
+          - not_null
+      - name: DATE
+        tests:
+          - not_null
