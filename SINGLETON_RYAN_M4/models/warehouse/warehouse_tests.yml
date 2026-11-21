@@ -36,6 +36,10 @@ models:
           - not_null
 
   - name: fct_daily_stocks
+    # composite key, built in unique on the joined columns (no dbt_utils)
+    data_tests:
+      - unique:
+          column_name: "SYMBOL || '|' || TRADE_DATE"
     columns:
       - name: SYMBOL
         tests:
@@ -43,10 +47,6 @@ models:
       - name: TRADE_DATE
         tests:
           - not_null
-      # same combined key trick as staging, no dbt_utils
-      - name: "SYMBOL || '|' || TRADE_DATE::VARCHAR"
-        tests:
-          - unique
       - name: DIRECTION
         tests:
           - not_null
@@ -54,6 +54,9 @@ models:
               values: ['UP', 'DOWN', 'FLAT']
 
   - name: fct_daily_weather
+    data_tests:
+      - unique:
+          column_name: "CITY || '|' || DATE"
     columns:
       - name: CITY
         tests:
@@ -61,6 +64,3 @@ models:
       - name: DATE
         tests:
           - not_null
-      - name: "CITY || '|' || DATE::VARCHAR"
-        tests:
-          - unique
