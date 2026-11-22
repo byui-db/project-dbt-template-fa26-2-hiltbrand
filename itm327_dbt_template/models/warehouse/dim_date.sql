@@ -20,8 +20,11 @@
 
 WITH date_spine AS (
     SELECT
-        DATEADD(DAY, SEQ4(), '2023-01-01'::DATE) AS DATE_KEY  -- TODO: update start date
-    FROM TABLE(GENERATOR(ROWCOUNT => 365 * 5))                 -- TODO: update years to cover your data
+        DATEADD(DAY, 
+        ROW_NUMBER() OVER (ORDER BY SEQ4()) - 1, 
+        '2026-09-14'::DATE
+        ) AS DATE_KEY  -- TODO: update start date
+    FROM TABLE(GENERATOR(ROWCOUNT => 1000))                 -- TODO: update years to cover your data
 )
 
 SELECT
@@ -42,8 +45,10 @@ SELECT
     -- Business flags
     DAYOFWEEKISO(DATE_KEY) IN (6, 7)            AS IS_WEEKEND,
     DAYOFWEEKISO(DATE_KEY) NOT IN (6, 7)        AS IS_WEEKDAY,
-    DAYOFWEEKISO(DATE_KEY) NOT IN (6, 7)        AS IS_TRADING_DAY  -- approximation: excludes weekends
+    DAYOFWEEKISO(DATE_KEY) NOT IN (6, 7)        AS IS_TRADING_DAY,  -- approximation: excludes weekends
                                                                     -- does not account for market holidays
+    LAST_DAY(DATE_KEY) = DATE_KEY AS IS_MONTH_END,
+    LAST_DAY(DATE_KEY, 'QUARTER') = DATE_KEY AS IS_QUARTER_END
 
 FROM date_spine
 WHERE DATE_KEY <= CURRENT_DATE() + INTERVAL '1 YEAR'  -- TODO: adjust future buffer if needed

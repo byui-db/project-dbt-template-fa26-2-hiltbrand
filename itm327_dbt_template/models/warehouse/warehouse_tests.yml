@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: dim_date
+    columns:
+      - name: DATE_KEY
+        data_tests: 
+          - not_null
+          - unique
+
+  - name: dim_symbols
+    columns:
+      - name: SYMBOL
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_weather_cities
+    columns:
+      - name: CITY
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_news
+    columns:
+      - name: ID
+        data_tests:
+          - not_null
+          - unique
+      - name: SYMBOL
+        data_tests:
+          - not_null
+      - name: DATE_KEY
+        data_tests:
+          - not_null
+
+  - name: fct_daily_stocks
+    columns:
+      - name: SYMBOL
+        data_tests:
+          - not_null
+      - name: TRADE_DATE
+        data_tests:
+          - not_null
+      - name: DIRECTION
+        data_tests:
+          - accepted_values:
+              
+                values: ['UP', 'DOWN', 'FLAT']
+  
+    data_tests:
+      - unique:
+          column_name: "SYMBOL || '|' || TRADE_DATE"
+
+
+  - name: fct_daily_weather
+    columns:
+      - name: CITY
+        data_tests:
+          - not_null
+      - name: DATE
+        data_tests:
+          - not_null
+    
+    data_tests:
+      - unique:
+          column_name: "CITY || '|' || DATE"
+  
+
+          
