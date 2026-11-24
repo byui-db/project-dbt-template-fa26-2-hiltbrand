@@ -1,0 +1,22 @@
+
+version: 2
+
+models:
+  - name: stock_news_daily
+    columns:
+      - name: SYMBOL
+        data_tests:
+          - not_null
+
+      - name: TRADE_DATE
+        data_tests:
+          - not_null
+
+      - name: DIRECTION
+        data_tests:
+          - accepted_values:
+              values: ['UP', 'DOWN', 'FLAT']
+
+    data_tests:
+      - unique:
+          column_name: "SYMBOL || '|' || TRADE_DATE"

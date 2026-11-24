@@ -43,4 +43,49 @@
 -- ============================================================
 
 -- TODO: Write your CTEs and SELECT statement below
-select 1 as placeholder  -- placeholder so the template compiles; DELETE this line when you write your own SELECT
+
+WITH news_daily AS (
+    SELECT
+        SYMBOL,
+        DATE_KEY,
+        COUNT(*) AS NEWS_ARTICLE_COUNT, -- counts artilces for each stock per day
+        LISTAGG(HEADLINE, ' | ') 
+            WITHIN GROUP (ORDER BY PUBLISHED_AT) AS HEADLINES  -- combine headlines into one string
+    FROM {{ ref('dim_news') }}
+    GROUP BY SYMBOL, DATE_KEY
+)
+
+SELECT
+    f.SYMBOL,
+    f.TRADE_DATE,
+    f.OPEN,
+    f.HIGH,
+    f.LOW,
+    f.CLOSE,
+    f.VOLUME,
+    f.DAILY_RANGE,
+    f.DAILY_CHANGE,
+    f.PCT_CHANGE,
+    f.DIRECTION,
+    COALESCE(n.NEWS_ARTICLE_COUNT, 0) AS NEWS_ARTICLE_COUNT,  -- return zero when no article
+    n.HEADLINES,
+    s.ALL_TIME_HIGH,
+    s.ALL_TIME_LOW,
+    s.AVG_CLOSE_PRICE,
+    ROUND(
+        (f.CLOSE - s.ALL_TIME_HIGH) /
+        NULLIF(s.ALL_TIME_HIGH, 0) * 100, 2
+    ) AS PCT_FROM_ATH
+
+FROM {{ ref('fct_daily_stocks') }} f
+
+LEFT JOIN news_daily n
+    ON f.SYMBOL = n.SYMBOL
+    AND f.TRADE_DATE = n.DATE_KEY
+
+LEFT JOIN {{ ref('dim_symbols') }} s
+    ON f.SYMBOL = s.SYMBOL
+
+LEFT JOIN {{ ref('dim_date') }} d
+    ON f.TRADE_DATE = d.DATE_KEY
+
