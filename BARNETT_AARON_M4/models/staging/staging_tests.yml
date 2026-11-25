@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  # -------------------------------------------------------------
+  # RAW_NEWS: Single-Column Primary Key (id)
+  # -------------------------------------------------------------
+  - name: raw_news
+    columns:
+      - name: id
+        tests:
+          - not_null
+          - unique
+      - name: headline
+        tests:
+          - not_null
+      - name: datetime
+        tests:
+          - not_null
+      - name: related
+        tests:
+          - not_null
+
+  # -------------------------------------------------------------
+  # RAW_STOCKS: Composite Primary Key (symbol + trade_date)
+  # -------------------------------------------------------------
+  - name: raw_stocks
+    tests:
+      - unique_combination_of_columns:
+          combination_of_columns:
+            - symbol
+            - trade_date
+    columns:
+      - name: symbol
+        tests:
+          - not_null
+      - name: trade_date
+        tests:
+          - not_null
+      - name: close
+        tests:
+          - not_null
+
+  # -------------------------------------------------------------
+  # RAW_WEATHER: Composite Primary Key (city + date)
+  # -------------------------------------------------------------
+  - name: raw_weather
+    tests:
+      - unique_combination_of_columns:
+          combination_of_columns:
+            - city
+            - date
+    columns:
+      - name: city
+        tests:
+          - not_null
+      - name: date
+        tests:
+          - not_null
+      - name: max_temp
+        tests:
+          - not_null
